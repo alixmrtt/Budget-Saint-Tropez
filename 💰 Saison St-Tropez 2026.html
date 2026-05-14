@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💰 Saison St-Tropez 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root {
+  --sand: #F5EDD8;
+  --deep: #1A1A2E;
+  --azure: #0077B6;
+  --gold: #E9C46A;
+  --coral: #E76F51;
+  --mint: #52B788;
+  --lavender: #9B72CF;
+  --surface: #FFFFFF;
+  --muted: #8B8B9E;
+  --danger: #E63946;
+  --warn: #F4A261;
+  --ok: #52B788;
+  --border: rgba(26,26,46,0.1);
+  --shadow: 0 4px 24px rgba(0,119,182,0.08);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--sand);
+  color: var(--deep);
+  min-height: 100vh;
+}
+
+/* ===== HERO HEADER ===== */
+.hero {
+  background: linear-gradient(135deg, var(--deep) 0%, #16213E 50%, #0F3460 100%);
+  padding: 32px 40px 0;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content:'';
+  position:absolute;
+  bottom:0; left:0; right:0;
+  height:60px;
+  background: var(--sand);
+  clip-path: ellipse(55% 100% at 50% 100%);
+}
+.hero-wave {
+  position:absolute;
+  top:0; left:0; right:0; bottom:0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 30px,
+    rgba(0,119,182,0.04) 30px,
+    rgba(0,119,182,0.04) 60px
+  );
+  pointer-events:none;
+}
+.hero-inner {
+  max-width:1400px; margin:0 auto;
+  display:flex; align-items:flex-start; justify-content:space-between;
+  position:relative; z-index:1;
+}
+.hero-left h1 {
+  font-family:'Playfair Display', serif;
+  font-size:clamp(28px,4vw,48px);
+  color:#fff;
+  line-height:1.15;
+  margin-bottom:8px;
+}
+.hero-left h1 span { color: var(--gold); }
+.hero-subtitle {
+  color: rgba(255,255,255,0.6);
+  font-family: 'DM Mono', monospace;
+  font-size:13px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:24px;
+}
+.hero-badges { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:40px; }
+.badge {
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:500;
+  letter-spacing:.5px;
+}
+.badge-azure { background:rgba(0,119,182,0.3); color:#90E0EF; border:1px solid rgba(0,119,182,0.4); }
+.badge-gold { background:rgba(233,196,106,0.2); color:var(--gold); border:1px solid rgba(233,196,106,0.3); }
+.badge-coral { background:rgba(231,111,81,0.2); color:#ffb4a2; border:1px solid rgba(231,111,81,0.3); }
+
+.hero-stats {
+  display:flex; gap:20px;
+}
+.hstat {
+  text-align:right;
+}
+.hstat-val {
+  font-family:'Playfair Display', serif;
+  font-size:28px;
+  color:var(--gold);
+  font-weight:700;
+}
+.hstat-lbl {
+  font-size:11px;
+  color:rgba(255,255,255,0.5);
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+/* ===== NAV TABS ===== */
+.nav-wrapper {
+  background: var(--sand);
+  padding:0 40px;
+  border-bottom:2px solid var(--border);
+  position:sticky; top:0; z-index:100;
+}
+.nav-inner { max-width:1400px; margin:0 auto; display:flex; gap:0; }
+.tab {
+  padding:16px 24px;
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:.5px;
+  cursor:pointer;
+  border:none;
+  background:none;
+  color:var(--muted);
+  border-bottom:3px solid transparent;
+  transition:all .2s;
+  white-space:nowrap;
+}
+.tab:hover { color:var(--azure); }
+.tab.active { color:var(--azure); border-bottom-color:var(--azure); }
+
+/* ===== MAIN LAYOUT ===== */
+.main { max-width:1400px; margin:0 auto; padding:32px 40px 60px; }
+
+.section { display:none; }
+.section.active { display:block; }
+
+/* ===== CARDS ===== */
+.card {
+  background:var(--surface);
+  border-radius:16px;
+  padding:24px;
+  box-shadow:var(--shadow);
+  border:1px solid var(--border);
+}
+.card-title {
+  font-family:'Playfair Display', serif;
+  font-size:18px;
+  font-weight:700;
+  margin-bottom:16px;
+  display:flex; align-items:center; gap:8px;
+}
+.card-title .icon {
+  width:32px; height:32px;
+  border-radius:8px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px;
+}
+
+/* ===== GRID HELPERS ===== */
+.g2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.g3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; }
+.g4 { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+.mb20 { margin-bottom:20px; }
+.mb28 { margin-bottom:28px; }
+
+/* ===== KPI CARDS ===== */
+.kpi {
+  background:var(--surface);
+  border-radius:14px;
+  padding:20px;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden;
+}
+.kpi::after {
+  content:'';
+  position:absolute;
+  top:0; right:0;
+  width:80px; height:80px;
+  border-radius:0 14px 0 80px;
+  opacity:.08;
+}
+.kpi.azure::after { background:var(--azure); }
+.kpi.gold::after { background:var(--gold); }
+.kpi.coral::after { background:var(--coral); }
+.kpi.mint::after { background:var(--mint); }
+.kpi-label { font-size:11px; text-transform:uppercase; letter-spacing:1.5px; color:var(--muted); margin-bottom:8px; }
+.kpi-value { font-family:'DM Mono', monospace; font-size:28px; font-weight:500; line-height:1; margin-bottom:4px; }
+.kpi-sub { font-size:12px; color:var(--muted); }
+.kpi.azure .kpi-value { color:var(--azure); }
+.kpi.gold .kpi-value { color:#B8870B; }
+.kpi.coral .kpi-value { color:var(--coral); }
+.kpi.mint .kpi-value { color:#2D8653; }
+
+/* ===== INPUTS ===== */
+input, select, textarea {
+  font-family:'DM Sans', sans-serif;
+  font-size:14px;
+  border:1.5px solid var(--border);
+  border-radius:10px;
+  padding:10px 14px;
+  background:#FAFAFA;
+  color:var(--deep);
+  transition:border-color .2s, box-shadow .2s;
+  width:100%;
+}
+input:focus, select:focus, textarea:focus {
+  outline:none;
+  border-color:var(--azure);
+  box-shadow:0 0 0 3px rgba(0,119,182,0.12);
+  background:#fff;
+}
+label { font-size:12px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.8px; display:block; margin-bottom:6px; }
+.field { margin-bottom:16px; }
+.field-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.field-row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+
+/* ===== BUTTONS ===== */
+.btn {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:11px 22px;
+  border-radius:10px;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  border:none;
+  transition:all .2s;
+}
+.btn-primary { background:var(--azure); color:#fff; }
+.btn-primary:hover { background:#005F92; transform:translateY(-1px); box-shadow:0 4px 16px rgba(0,119,182,0.3); }
+.btn-success { background:var(--mint); color:#fff; }
+.btn-success:hover { background:#3D9B68; }
+.btn-danger { background:var(--danger); color:#fff; }
+.btn-ghost { background:transparent; color:var(--azure); border:1.5px solid var(--azure); }
+.btn-ghost:hover { background:var(--azure); color:#fff; }
+.btn-gold { background:var(--gold); color:var(--deep); }
+.btn-gold:hover { background:#d4a833; }
+.btn-sm { padding:7px 14px; font-size:12px; }
+
+/* ===== ALERT BARS ===== */
+.alert {
+  padding:12px 18px;
+  border-radius:10px;
+  font-size:13px;
+  font-weight:500;
+  display:flex; align-items:center; gap:10px;
+  margin-bottom:12px;
+}
+.alert-ok { background:rgba(82,183,136,0.12); color:#2D8653; border:1px solid rgba(82,183,136,0.3); }
+.alert-warn { background:rgba(244,162,97,0.15); color:#B05E00; border:1px solid rgba(244,162,97,0.4); }
+.alert-danger { background:rgba(230,57,70,0.12); color:#C1121F; border:1px solid rgba(230,57,70,0.3); }
+
+/* ===== TABLE ===== */
+.table-wrapper { overflow-x:auto; border-radius:12px; }
+table { width:100%; border-collapse:collapse; font-size:14px; }
+thead tr { background:var(--deep); color:#fff; }
+thead th { padding:12px 16px; text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:1px; font-weight:600; }
+tbody tr { border-bottom:1px solid var(--border); transition:background .15s; }
+tbody tr:hover { background:rgba(0,119,182,0.04); }
+tbody td { padding:11px 16px; }
+.td-num { font-family:'DM Mono', monospace; }
+.chip {
+  display:inline-block;
+  padding:3px 10px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:600;
+}
+.chip-ok { background:rgba(82,183,136,0.15); color:#2D8653; }
+.chip-warn { background:rgba(244,162,97,0.2); color:#B05E00; }
+.chip-danger { background:rgba(230,57,70,0.12); color:#C1121F; }
+
+/* ===== PROGRESS BAR ===== */
+.progress-wrap { background:#EEE; border-radius:20px; height:8px; overflow:hidden; }
+.progress-bar { height:100%; border-radius:20px; transition:width .5s ease; }
+.progress-bar.ok { background:var(--mint); }
+.progress-bar.warn { background:var(--warn); }
+.progress-bar.danger { background:var(--danger); }
+
+/* ===== MONTH SELECTOR ===== */
+.month-pills { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px; }
+.month-pill {
+  padding:8px 18px;
+  border-radius:20px;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  border:1.5px solid var(--border);
+  background:var(--surface);
+  color:var(--muted);
+  transition:all .2s;
+}
+.month-pill.active { background:var(--azure); color:#fff; border-color:var(--azure); }
+.month-pill:hover:not(.active) { border-color:var(--azure); color:var(--azure); }
+
+/* ===== LIMIT SLIDER ===== */
+.limit-row { display:flex; align-items:center; gap:14px; margin-bottom:12px; }
+.limit-label { min-width:140px; font-size:13px; font-weight:600; }
+.limit-val { font-family:'DM Mono', monospace; font-size:14px; min-width:70px; text-align:right; color:var(--azure); }
+input[type=range] {
+  -webkit-appearance:none;
+  height:6px;
+  border-radius:3px;
+  background:var(--border);
+  border:none;
+  padding:0;
+  box-shadow:none;
+  flex:1;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance:none;
+  width:18px; height:18px;
+  border-radius:50%;
+  background:var(--azure);
+  cursor:pointer;
+  box-shadow:0 2px 6px rgba(0,119,182,0.4);
+}
+
+/* ===== DAILY LOG ===== */
+.log-entry {
+  display:flex; align-items:center; gap:12px;
+  padding:12px 16px;
+  border-radius:10px;
+  background:#FAFAFA;
+  border:1px solid var(--border);
+  margin-bottom:8px;
+  animation:slideIn .3s ease;
+}
+@keyframes slideIn { from { opacity:0; transform:translateX(-10px); } to { opacity:1; transform:translateX(0); } }
+.log-cat { font-size:18px; }
+.log-desc { flex:1; font-size:14px; }
+.log-desc small { color:var(--muted); font-size:11px; display:block; }
+.log-amount { font-family:'DM Mono', monospace; font-size:15px; font-weight:500; color:var(--coral); }
+.log-delete { background:none; border:none; cursor:pointer; color:var(--muted); font-size:16px; padding:4px; border-radius:6px; }
+.log-delete:hover { color:var(--danger); background:rgba(230,57,70,0.1); }
+
+/* ===== CHART CONTAINER ===== */
+.chart-container { position:relative; }
+
+/* ===== SAVINGS GOAL ===== */
+.goal-ring {
+  width:140px; height:140px;
+  position:relative;
+  margin:0 auto 16px;
+}
+.goal-ring svg { transform:rotate(-90deg); }
+.goal-ring .ring-bg { fill:none; stroke:#EEE; stroke-width:14; }
+.goal-ring .ring-fill { fill:none; stroke:var(--mint); stroke-width:14; stroke-linecap:round; transition:stroke-dashoffset .8s ease; }
+.goal-pct { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; }
+.goal-pct .pct-num { font-family:'DM Mono', monospace; font-size:24px; font-weight:500; color:var(--mint); display:block; }
+.goal-pct .pct-lbl { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1px; }
+
+/* ===== WORK SCHEDULE ===== */
+.week-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; }
+.day-cell {
+  border-radius:10px;
+  padding:10px 6px;
+  text-align:center;
+  border:1.5px solid var(--border);
+  background:#FAFAFA;
+  cursor:pointer;
+  transition:all .2s;
+  min-height:80px;
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+}
+.day-cell:hover { border-color:var(--azure); }
+.day-cell.worked { background:rgba(0,119,182,0.08); border-color:var(--azure); }
+.day-cell.off { background:rgba(231,111,81,0.06); border-color:rgba(231,111,81,0.3); }
+.day-name { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); }
+.day-num { font-family:'DM Mono', monospace; font-size:16px; font-weight:500; }
+.day-hours { font-size:10px; color:var(--azure); font-weight:600; }
+.day-tip { font-size:10px; color:var(--mint); }
+
+/* ===== SECTION HEADERS ===== */
+.section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; }
+.section-header h2 { font-family:'Playfair Display', serif; font-size:26px; }
+.section-header h2 span { color:var(--azure); }
+
+/* ===== SEPARATOR ===== */
+.sep { border:none; border-top:1px solid var(--border); margin:24px 0; }
+
+/* ===== SCROLL ===== */
+::-webkit-scrollbar { width:6px; height:6px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:rgba(0,0,0,0.15); border-radius:3px; }
+
+/* RESPONSIVE */
+@media(max-width:900px) {
+  .hero { padding:24px 20px 0; }
+  .nav-wrapper { padding:0 16px; }
+  .main { padding:20px 16px 60px; }
+  .g2,.g3,.g4 { grid-template-columns:1fr; }
+  .hero-stats { display:none; }
+  .tab { padding:14px 16px; font-size:12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-wave"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-subtitle">Gestion financière · Saison 2026</div>
+      <h1>Ma Saison<br><span>St-Tropez</span> 🌊</h1>
+      <div class="hero-badges">
+        <span class="badge badge-azure">🍽️ Restauration</span>
+        <span class="badge badge-gold">💛 Mai → Octobre 2026</span>
+        <span class="badge badge-coral">📍 St-Tropez</span>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat">
+        <div class="hstat-val" id="hero-total-earned">0 €</div>
+        <div class="hstat-lbl">Gagné (saison)</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-val" id="hero-total-saved">0 €</div>
+        <div class="hstat-lbl">Épargne totale</div>
+      </div>
+      <div class="hstat">
+        <div class="hstat-val" id="hero-days">0</div>
+        <div class="hstat-lbl">Jours travaillés</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-wrapper">
+  <div class="nav-inner">
+    <button class="tab active" onclick="showTab('overview')">📊 Vue d'ensemble</button>
+    <button class="tab" onclick="showTab('monthly')">📅 Mois par mois</button>
+    <button class="tab" onclick="showTab('daily')">⚡ Saisie rapide</button>
+    <button class="tab" onclick="showTab('work')">🕐 Planning</button>
+    <button class="tab" onclick="showTab('budget')">🎯 Budget & Limites</button>
+    <button class="tab" onclick="showTab('recap')">🏆 Récap saison</button>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ===== TAB: VUE D'ENSEMBLE ===== -->
+<div id="tab-overview" class="section active">
+  <div class="section-header">
+    <h2>Vue d'ensemble <span>Saison 2026</span></h2>
+    <button class="btn btn-primary btn-sm" onclick="exportData()">💾 Exporter données</button>
+  </div>
+
+  <!-- KPIs -->
+  <div class="g4 mb20" id="kpi-grid">
+    <div class="kpi azure">
+      <div class="kpi-label">Revenus du mois</div>
+      <div class="kpi-value" id="kpi-income">0 €</div>
+      <div class="kpi-sub">Salaire + pourboires</div>
+    </div>
+    <div class="kpi coral">
+      <div class="kpi-label">Dépenses du mois</div>
+      <div class="kpi-value" id="kpi-expenses">0 €</div>
+      <div class="kpi-sub" id="kpi-exp-sub">0% du budget</div>
+    </div>
+    <div class="kpi mint">
+      <div class="kpi-label">Épargne du mois</div>
+      <div class="kpi-value" id="kpi-savings">0 €</div>
+      <div class="kpi-sub" id="kpi-sav-sub">Objectif: 0 €</div>
+    </div>
+    <div class="kpi gold">
+      <div class="kpi-label">Épargne totale</div>
+      <div class="kpi-value" id="kpi-total-savings">0 €</div>
+      <div class="kpi-sub" id="kpi-goal-sub">Objectif saison: 0 €</div>
+    </div>
+  </div>
+
+  <!-- Alertes visuelles -->
+  <div id="alerts-container" class="mb28"></div>
+
+  <div class="g2 mb20">
+    <!-- Camembert dépenses -->
+    <div class="card">
+      <div class="card-title"><span class="icon" style="background:rgba(231,111,81,0.12)">🥧</span> Répartition des dépenses</div>
+      <div class="chart-container" style="height:260px; display:flex; align-items:center; justify-content:center;">
+        <canvas id="pieChart" style="max-height:260px;"></canvas>
+      </div>
+      <div id="pie-empty" style="text-align:center;color:var(--muted);font-size:13px;padding:40px 0;">Aucune dépense ce mois-ci</div>
+    </div>
+
+    <!-- Objectif épargne -->
+    <div class="card">
+      <div class="card-title"><span class="icon" style="background:rgba(82,183,136,0.12)">🎯</span> Objectif d'épargne</div>
+      
+      <div class="goal-ring">
+        <svg viewBox="0 0 140 140" width="140" height="140">
+          <circle class="ring-bg" cx="70" cy="70" r="56"/>
+          <circle class="ring-fill" id="ring-fill" cx="70" cy="70" r="56" stroke-dasharray="351.9" stroke-dashoffset="351.9"/>
+        </svg>
+        <div class="goal-pct">
+          <span class="pct-num" id="goal-pct">0%</span>
+          <span class="pct-lbl">atteint</span>
+        </div>
+      </div>
+
+      <div style="margin-bottom:16px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+          <span style="font-size:13px;">Épargne totale</span>
+          <span style="font-family:'DM Mono', monospace; font-size:13px; color:var(--mint);" id="goal-current">0 €</span>
+        </div>
+        <div class="progress-wrap"><div class="progress-bar ok" id="goal-bar" style="width:0%"></div></div>
+      </div>
+
+      <div class="field">
+        <label>Objectif épargne saison (€)</label>
+        <input type="number" id="saving-goal" value="6000" placeholder="6000" oninput="updateGoal()">
+      </div>
+      <div class="field">
+        <label>Épargne cible / mois (€)</label>
+        <input type="number" id="monthly-saving-goal" value="1000" placeholder="1000">
+      </div>
+    </div>
+  </div>
+
+  <!-- Courbe épargne mensuelle -->
+  <div class="card">
+    <div class="card-title"><span class="icon" style="background:rgba(0,119,182,0.1)">📈</span> Évolution de l'épargne — Mai à Octobre</div>
+    <div style="height:220px;">
+      <canvas id="savingsChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB: MOIS PAR MOIS ===== -->
+<div id="tab-monthly" class="section">
+  <div class="section-header">
+    <h2>Budget <span>mensuel</span></h2>
+  </div>
+
+  <div class="month-pills">
+    <button class="month-pill active" onclick="selectMonth('mai')">🌸 Mai</button>
+    <button class="month-pill" onclick="selectMonth('juin')">☀️ Juin</button>
+    <button class="month-pill" onclick="selectMonth('juillet')">🔥 Juillet</button>
+    <button class="month-pill" onclick="selectMonth('aout')">🏖️ Août</button>
+    <button class="month-pill" onclick="selectMonth('septembre')">🍃 Septembre</button>
+    <button class="month-pill" onclick="selectMonth('octobre')">🍂 Octobre</button>
+  </div>
+
+  <div class="g2 mb20">
+    <!-- Revenus -->
+    <div class="card">
+      <div class="card-title"><span class="icon" style="background:rgba(0,119,182,0.1)">💰</span> Revenus <span id="month-label-income" style="font-size:14px;color:var(--muted);margin-left:8px;"></span></div>
+      <div class="field">
+        <label>Salaire net mensuel (€)</label>
+        <input type="number" id="m-salary" placeholder="2000" oninput="saveMonth()">
+      </div>
+      <div class="field">
+        <label>Pourboires (€)</label>
+        <input type="number" id="m-tips" placeholder="300" oninput="saveMonth()">
+      </div>
+      <div class="field">
+        <label>Autres revenus (€)</label>
+        <input type="number" id="m-other-income" placeholder="0" oninput="saveMonth()">
+      </div>
+      <div style="padding:14px; background:rgba(0,119,182,0.06); border-radius:10px; border:1px solid rgba(0,119,182,0.15);">
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">TOTAL REVENUS</div>
+        <div style="font-family:'DM Mono', monospace; font-size:22px; color:var(--azure); font-weight:500;" id="m-total-income">0 €</div>
+      </div>
+    </div>
+
+    <!-- Épargne ce mois -->
+    <div class="card">
+      <div class="card-title"><span class="icon" style="background:rgba(82,183,136,0.12)">🏦</span> Résultat du mois</div>
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <div style="padding:12px 16px; background:#FAFAFA; border-radius:10px; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:13px;">💰 Revenus totaux</span>
+          <span style="font-family:'DM Mono',monospace; color:var(--azure);" id="res-income">0 €</span>
+        </div>
+        <div style="padding:12px 16px; background:#FAFAFA; border-radius:10px; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:13px;">💸 Dépenses totales</span>
+          <span style="font-family:'DM Mono',monospace; color:var(--coral);" id="res-exp">0 €</span>
+        </div>
+        <div style="padding:14px 16px; background:rgba(82,183,136,0.1); border-radius:10px; border:1px solid rgba(82,183,136,0.3); display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:14px; font-weight:600;">🏦 Épargne</span>
+          <span style="font-family:'DM Mono',monospace; font-size:18px; font-weight:500; color:var(--mint);" id="res-sav">0 €</span>
+        </div>
+        <div style="padding:12px 16px; background:#FAFAFA; border-radius:10px; border:1px solid var(--border);">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+            <span style="font-size:12px; color:var(--muted);">Budget utilisé</span>
+            <span style="font-size:12px; font-weight:600;" id="res-pct">0%</span>
+          </div>
+          <div class="progress-wrap"><div class="progress-bar ok" id="res-bar" style="width:0%"></div></div>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label>Montant mis de côté ce mois (€)</label>
+          <input type="number" id="m-manual-savings" placeholder="Auto-calculé ou saisir manuellement" oninput="saveMonth()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dépenses par catégorie -->
+  <div class="card mb20">
+    <div class="card-title"><span class="icon" style="background:rgba(231,111,81,0.12)">💸</span> Dépenses par catégorie</div>
+    <div id="categories-container"></div>
+    <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+      <span style="font-weight:600;">Total dépenses</span>
+      <span style="font-family:'DM Mono',monospace; font-size:18px; color:var(--coral); font-weight:500;" id="m-total-exp">0 €</span>
+    </div>
+  </div>
+
+  <!-- Notes du mois -->
+  <div class="card">
+    <div class="card-title"><span class="icon" style="background:rgba(155,114,207,0.12)">📝</span> Notes du mois</div>
+    <textarea id="m-notes" rows="3" placeholder="Observations, objectifs, événements du mois..." oninput="saveMonth()" style="resize:vertical;"></textarea>
+  </div>
+</div>
+
+<!-- ===== TAB: SAISIE RAPIDE ===== -->
+<div id="tab-daily" class="section">
+  <div class="section-header">
+    <h2>Saisie <span>rapide</span></h2>
+  </div>
+
+  <div class="g2 mb20">
+    <div class="card">
+      <div class="card-title"><span class="icon" style="background:rgba(231,111,81,0.12)">⚡</span> Ajouter une dépense</div>
+      <div class="field-row3">
+        <div class="field" style="margin-bottom:0;">
+          <label>Date</label>
+          <input type="date" id="log-date">
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label>Montant (€)</label>
+          <input type="number" id="log-amount" placeholder="0.00" step="0.01">
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label>Catégorie</label>
+          <select id="log-cat">
+            <option value="🍔 Alimentation">🍔 Alimentation</option>
+            <option value="🚗 Transport">🚗 Transport</option>
+            <option value="🏠 Logement">🏠 Logement</option>
+            <option value="🎉 Sorties">🎉 Sorties</option>
+            <option value="👕 Vêtements">👕 Vêtements</option>
+            <option value="💊 Santé">💊 Santé</option>
+            <option value="📱 Téléphone/Internet">📱 Téléphone/Internet</option>
+            <option value="☕ Café/Resto">☕ Café/Resto</option>
+            <option value="🛒 Courses">🛒 Courses</option>
+            <option value="✈️ Voyage">✈️ Voyage</option>
+            <option value="💄 Beauté">💄 Beauté</option>
+            <option value="🎮 Loisirs">🎮 Loisirs</option>
+            <option value="📦 Divers">📦 Divers</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Description</label>
+        <input type="text" id="log-desc" placeholder="Ex: Supermarché, pizza, plein essence...">
+      </div>
+      <button class="btn btn-primary" onclick="addLog()" style="width:100%;">➕ Ajouter la dépense</button>
+    </div>
+
+    <!-- Résumé du jour -->
+    <div class="card">
+      <div class="card-title"><span class="icon" style="background:rgba(0,119,182,0.1)">📋</span> Aujourd'hui</div>
+      <div id="today-summary">
+        <div style="text-align:center; padding:30px; color:var(--muted); font-size:14px;">Aucune dépense aujourd'hui 🎉</div>
+      </div>
+      <hr class="sep">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-weight:600; font-size:14px;">Total aujourd'hui</span>
+        <span style="font-family:'DM Mono',monospace; font-size:20px; color:var(--coral);" id="today-total">0 €</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Historique -->
+  <div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+      <div class="card-title" style="margin-bottom:0;"><span class="icon" style="background:rgba(155,114,207,0.12)">📜</span> Historique du mois</div>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <select id="filter-month" onchange="renderLogs()" style="width:auto;">
+          <option value="all">Tous les mois</option>
+          <option value="mai">Mai</option>
+          <option value="juin">Juin</option>
+          <option value="juillet">Juillet</option>
+          <option value="aout">Août</option>
+          <option value="septembre">Septembre</option>
+          <option value="octobre">Octobre</option>
+        </select>
+        <button class="btn btn-ghost btn-sm" onclick="clearLogs()">🗑️ Effacer tout</button>
+      </div>
+    </div>
+    <div id="log-list"></div>
+  </div>
+</div>
+
+<!-- ===== TAB: PLANNING ===== -->
+<div id="tab-work" class="section">
+  <div class="section-header">
+    <h2>Planning <span>de travail</span></h2>
+  </div>
+
+  <div class="g2 mb20">
+    <div class="card">
+      <div class="card-title"><span class="icon" style="background:rgba(0,119,182,0.1)">📊</span> Statistiques</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        <div style="padding:14px; background:#FAFAFA; border-radius:10px; text-align:center;">
+          <div style="font-family:'DM Mono',monospace; font-size:24px; color:var(--azure);" id="stat-days">0</div>
+          <div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px;">Jours travaillés</div>
+        </div>
+        <div style="padding:14px; background:#FAFAFA; border-radius:10px; text-align:center;">
+          <div style="font-family:'DM Mono',monospace; font-size:24px; color:var(--mint);" id="stat-hours">0h</div>
+          <div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px;">Heures totales</div>
+        </div>
+        <div style="padding:14px; background:#FAFAFA; border-radius:10px; text-align:center;">
+          <div style="font-family:'DM Mono',monospace; font-size:24px; color:var(--gold);" id="stat-tips">0 €</div>
+          <div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px;">Tips ce mois</div>
+        </div>
+        <div style="padding:14px; background:#FAFAFA; border-radius:10px; text-align:center;">
+          <div style="font-family:'DM Mono',monospace; font-size:24px; color:var(--coral);" id="stat-avg-tips">0 €</div>
+          <div style="font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px;">Tips / service</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ajouter service -->
+    <div class="card">
+      <div class="card-title"><span class="icon" style="background:rgba(82,183,136,0.12)">➕</span> Ajouter un service</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Date</label>
+          <input type="date" id="work-date">
+        </div>
+        <div class="field">
+          <label>Type de service</label>
+          <select id="work-type">
+            <option value="Déjeuner">🌞 Déjeuner</option>
+            <option value="Dîner">🌙 Dîner</option>
+            <option value="Journée">☀️ Journée complète</option>
+            <option value="Extra">⚡ Extra</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Heure début</label>
+          <input type="time" id="work-start" value="10:00">
+        </div>
+        <div class="field">
+          <label>Heure fin</label>
+          <input type="time" id="work-end" value="16:00">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Pourboires (€)</label>
+          <input type="number" id="work-tips" placeholder="0" step="0.50">
+        </div>
+        <div class="field">
+          <label>Notes</label>
+          <input type="text" id="work-notes" placeholder="Terrasse, soirée privée...">
+        </div>
+      </div>
+      <button class="btn btn-success" onclick="addWork()" style="width:100%;">✅ Enregistrer le service</button>
+    </div>
+  </div>
+
+  <!-- Mois sélecteur -->
+  <div class="month-pills" id="work-month-pills">
+    <button class="month-pill active" onclick="selectWorkMonth('mai')">🌸 Mai</button>
+    <button class="month-pill" onclick="selectWorkMonth('juin')">☀️ Juin</button>
+    <button class="month-pill" onclick="selectWorkMonth('juillet')">🔥 Juillet</button>
+    <button class="month-pill" onclick="selectWorkMonth('aout')">🏖️ Août</button>
+    <button class="month-pill" onclick="selectWorkMonth('septembre')">🍃 Septembre</button>
+    <button class="month-pill" onclick="selectWorkMonth('octobre')">🍂 Octobre</button>
+  </div>
+
+  <!-- Tableau services -->
+  <div class="card">
+    <div class="card-title"><span class="icon" style="background:rgba(233,196,106,0.2)">🗓️</span> Services enregistrés</div>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Début</th>
+            <th>Fin</th>
+            <th>Heures</th>
+            <th>Pourboires</th>
+            <th>Notes</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="work-table"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB: BUDGET & LIMITES ===== -->
+<div id="tab-budget" class="section">
+  <div class="section-header">
+    <h2>Budget & <span>Limites</span></h2>
+  </div>
+
+  <div class="g2 mb20">
+    <div class="card">
+      <div class="card-title"><span class="icon" style="background:rgba(231,111,81,0.12)">🎚️</span> Définir mes limites de dépenses</div>
+      <p style="font-size:13px; color:var(--muted); margin-bottom:20px;">Glisse les curseurs pour définir tes plafonds mensuels. Une alerte visuelle s'activera si tu dépasses.</p>
+      <div id="limit-sliders"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon" style="background:rgba(82,183,136,0.12)">📊</span> Situation actuelle vs limites</div>
+      <div id="limit-status"></div>
+    </div>
+  </div>
+
+  <!-- Camembert par budget -->
+  <div class="card">
+    <div class="card-title"><span class="icon" style="background:rgba(0,119,182,0.1)">🎯</span> Budget alloué par catégorie</div>
+    <div style="height:280px;">
+      <canvas id="budgetChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAB: RECAP ===== -->
+<div id="tab-recap" class="section">
+  <div class="section-header">
+    <h2>Récap <span>saison</span></h2>
+  </div>
+
+  <div class="g4 mb20">
+    <div class="kpi azure">
+      <div class="kpi-label">Revenus totaux</div>
+      <div class="kpi-value" id="recap-income">0 €</div>
+      <div class="kpi-sub">6 mois de saison</div>
+    </div>
+    <div class="kpi coral">
+      <div class="kpi-label">Dépenses totales</div>
+      <div class="kpi-value" id="recap-exp">0 €</div>
+      <div class="kpi-sub">Toutes catégories</div>
+    </div>
+    <div class="kpi mint">
+      <div class="kpi-label">Épargne totale</div>
+      <div class="kpi-value" id="recap-sav">0 €</div>
+      <div class="kpi-sub">Mise de côté</div>
+    </div>
+    <div class="kpi gold">
+      <div class="kpi-label">Jours travaillés</div>
+      <div class="kpi-value" id="recap-days">0</div>
+      <div class="kpi-sub">Total saison</div>
+    </div>
+  </div>
+
+  <!-- Tableau recap par mois -->
+  <div class="card mb20">
+    <div class="card-title"><span class="icon" style="background:rgba(0,119,182,0.1)">📋</span> Tableau récapitulatif — Mai → Octobre</div>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Mois</th>
+            <th>Salaire</th>
+            <th>Pourboires</th>
+            <th>Autres</th>
+            <th>Revenus totaux</th>
+            <th>Dépenses</th>
+            <th>Épargne</th>
+            <th>% Épargne</th>
+          </tr>
+        </thead>
+        <tbody id="recap-table"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Evolution épargne -->
+  <div class="card">
+    <div class="card-title"><span class="icon" style="background:rgba(82,183,136,0.12)">📈</span> Courbe d'évolution de l'épargne (cumulée)</div>
+    <div style="height:260px;">
+      <canvas id="recapChart"></canvas>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+const MONTHS = ['mai','juin','juillet','aout','septembre','octobre'];
+const MONTH_LABELS = {'mai':'🌸 Mai','juin':'☀️ Juin','juillet':'🔥 Juillet','aout':'🏖️ Août','septembre':'🍃 Septembre','octobre':'🍂 Octobre'};
+
+const CATEGORIES = [
+  {id:'logement', label:'🏠 Logement', color:'#0077B6'},
+  {id:'alimentation', label:'🍔 Alimentation', color:'#E76F51'},
+  {id:'transport', label:'🚗 Transport', color:'#9B72CF'},
+  {id:'sorties', label:'🎉 Sorties', color:'#E9C46A'},
+  {id:'sante', label:'💊 Santé', color:'#52B788'},
+  {id:'telephone', label:'📱 Téléphone', color:'#457B9D'},
+  {id:'courses', label:'🛒 Courses', color:'#2A9D8F'},
+  {id:'vetements', label:'👕 Vêtements', color:'#E63946'},
+  {id:'beaute', label:'💄 Beauté', color:'#F4A261'},
+  {id:'loisirs', label:'🎮 Loisirs', color:'#6D6875'},
+  {id:'divers', label:'📦 Divers', color:'#ADB5BD'},
+];
+
+let data = {
+  months: {},
+  logs: [],
+  work: [],
+  limits: {},
+  savingGoal: 6000,
+  monthlySavingGoal: 1000,
+};
+
+MONTHS.forEach(m => {
+  data.months[m] = {salary:0, tips:0, otherIncome:0, manualSavings:null, notes:'', expenses:{}};
+  CATEGORIES.forEach(c => { data.months[m].expenses[c.id] = 0; });
+  data.limits[c] = 300;
+});
+CATEGORIES.forEach(c => { data.limits[c.id] = 300; });
+data.limits['logement'] = 600;
+data.limits['alimentation'] = 200;
+data.limits['sorties'] = 150;
+
+let currentMonth = 'mai';
+let currentWorkMonth = 'mai';
+let pieChart = null, savingsChart = null, budgetChart = null, recapChart = null;
+
+function loadData() {
+  try {
+    const saved = localStorage.getItem('tropez2026');
+    if(saved) data = JSON.parse(saved);
+  } catch(e){}
+}
+function saveData() {
+  localStorage.setItem('tropez2026', JSON.stringify(data));
+}
+
+function showTab(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  event.target.classList.add('active');
+  updateAll();
+}
+
+function selectMonth(m) {
+  currentMonth = m;
+  document.querySelectorAll('.month-pill').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  loadMonthData();
+}
+function selectWorkMonth(m) {
+  currentWorkMonth = m;
+  document.querySelectorAll('#work-month-pills .month-pill').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  renderWorkTable();
+  updateWorkStats();
+}
+
+function loadMonthData() {
+  const m = data.months[currentMonth];
+  document.getElementById('month-label-income').textContent = MONTH_LABELS[currentMonth];
+  document.getElementById('m-salary').value = m.salary || '';
+  document.getElementById('m-tips').value = m.tips || '';
+  document.getElementById('m-other-income').value = m.otherIncome || '';
+  document.getElementById('m-notes').value = m.notes || '';
+  document.getElementById('m-manual-savings').value = m.manualSavings !== null ? m.manualSavings : '';
+  renderCategoryInputs();
+  updateMonthCalc();
+}
+
+function saveMonth() {
+  const m = data.months[currentMonth];
+  m.salary = parseFloat(document.getElementById('m-salary').value)||0;
+  m.tips = parseFloat(document.getElementById('m-tips').value)||0;
+  m.otherIncome = parseFloat(document.getElementById('m-other-income').value)||0;
+  m.notes = document.getElementById('m-notes').value;
+  const ms = document.getElementById('m-manual-savings').value;
+  m.manualSavings = ms !== '' ? parseFloat(ms)||0 : null;
+  CATEGORIES.forEach(c => {
+    const el = document.getElementById('cat-'+c.id);
+    if(el) m.expenses[c.id] = parseFloat(el.value)||0;
+  });
+  saveData();
+  updateMonthCalc();
+  updateHero();
+  updateGoal();
+}
+
+function renderCategoryInputs() {
+  const m = data.months[currentMonth];
+  const container = document.getElementById('categories-container');
+  container.innerHTML = '';
+  const grid = document.createElement('div');
+  grid.style.cssText = 'display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:8px;';
+  CATEGORIES.forEach(c => {
+    const div = document.createElement('div');
+    div.style.cssText = 'display:flex; align-items:center; gap:10px; padding:10px; background:#FAFAFA; border-radius:10px; border:1px solid var(--border);';
+    div.innerHTML = `
+      <span style="font-size:18px; min-width:24px;">${c.label.split(' ')[0]}</span>
+      <div style="flex:1;">
+        <div style="font-size:11px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px;">${c.label.split(' ').slice(1).join(' ')}</div>
+        <input type="number" id="cat-${c.id}" value="${m.expenses[c.id]||''}" placeholder="0" step="0.50" oninput="saveMonth()" style="padding:6px 10px; font-size:13px;">
+      </div>
+      <span style="font-family:'DM Mono',monospace; font-size:11px; color:var(--azure);">${data.limits[c.id]||0}€ max</span>
+    `;
+    grid.appendChild(div);
+  });
+  container.appendChild(grid);
+}
+
+function updateMonthCalc() {
+  const m = data.months[currentMonth];
+  const totalIncome = m.salary + m.tips + m.otherIncome;
+  const totalExp = CATEGORIES.reduce((s,c) => s + (m.expenses[c.id]||0), 0);
+  const savings = m.manualSavings !== null ? m.manualSavings : totalIncome - totalExp;
+  document.getElementById('m-total-income').textContent = fmt(totalIncome);
+  document.getElementById('m-total-exp').textContent = fmt(totalExp);
+  document.getElementById('res-income').textContent = fmt(totalIncome);
+  document.getElementById('res-exp').textContent = fmt(totalExp);
+  document.getElementById('res-sav').textContent = fmt(savings);
+  const pct = totalIncome > 0 ? Math.round((totalExp/totalIncome)*100) : 0;
+  document.getElementById('res-pct').textContent = pct+'%';
+  const bar = document.getElementById('res-bar');
+  bar.style.width = Math.min(pct,100)+'%';
+  bar.className = 'progress-bar '+(pct>90?'danger':pct>70?'warn':'ok');
+}
+
+function updateOverview() {
+  const m = data.months[currentMonth];
+  const totalIncome = m.salary + m.tips + m.otherIncome;
+  const totalExp = CATEGORIES.reduce((s,c) => s + (m.expenses[c.id]||0), 0);
+  const savings = m.manualSavings !== null ? m.manualSavings : totalIncome - totalExp;
+  document.getElementById('kpi-income').textContent = fmt(totalIncome);
+  document.getElementById('kpi-expenses').textContent = fmt(totalExp);
+  const pct = totalIncome > 0 ? Math.round((totalExp/totalIncome)*100) : 0;
+  document.getElementById('kpi-exp-sub').textContent = pct+'% du budget';
+  document.getElementById('kpi-savings').textContent = fmt(savings);
+  document.getElementById('kpi-sav-sub').textContent = 'Objectif: '+fmt(data.monthlySavingGoal||1000);
+  const totalSav = calcTotalSavings();
+  document.getElementById('kpi-total-savings').textContent = fmt(totalSav);
+  document.getElementById('kpi-goal-sub').textContent = 'Objectif: '+fmt(data.savingGoal||6000);
+  updateAlerts(totalExp, totalIncome);
+  updatePieChart();
+  updateSavingsChart();
+}
+
+function updateAlerts(totalExp, totalIncome) {
+  const container = document.getElementById('alerts-container');
+  container.innerHTML = '';
+  const pct = totalIncome > 0 ? (totalExp/totalIncome)*100 : 0;
+  if(pct > 90) {
+    addAlert(container, 'danger', '🚨 ATTENTION', `Tu as dépensé ${Math.round(pct)}% de tes revenus ce mois-ci ! Urgence budgétaire.`);
+  } else if(pct > 70) {
+    addAlert(container, 'warn', '⚠️ Vigilance', `Tu approches de ta limite — ${Math.round(pct)}% de tes revenus dépensés.`);
+  } else if(totalIncome > 0) {
+    addAlert(container, 'ok', '✅ Bonne gestion', `Tu as dépensé ${Math.round(pct)}% de tes revenus. Continue comme ça !`);
+  }
+  CATEGORIES.forEach(c => {
+    const exp = data.months[currentMonth].expenses[c.id]||0;
+    const limit = data.limits[c.id]||0;
+    if(limit > 0 && exp > limit) {
+      addAlert(container, 'danger', `${c.label}`, `Limite dépassée : ${fmt(exp)} / ${fmt(limit)} autorisé`);
+    } else if(limit > 0 && exp > limit*0.85) {
+      addAlert(container, 'warn', `${c.label}`, `Proche de la limite : ${fmt(exp)} / ${fmt(limit)}`);
+    }
+  });
+  if(container.innerHTML === '') {
+    addAlert(container, 'ok', '🌴 Tout est OK', 'Aucune alerte pour le moment. Profite de la saison !');
+  }
+}
+
+function addAlert(container, type, title, msg) {
+  const div = document.createElement('div');
+  div.className = `alert alert-${type}`;
+  div.innerHTML = `<strong>${title}</strong> — ${msg}`;
+  container.appendChild(div);
+}
+
+function updatePieChart() {
+  const m = data.months[currentMonth];
+  const labels = [], values = [], colors = [];
+  CATEGORIES.forEach(c => {
+    const v = m.expenses[c.id]||0;
+    if(v > 0) { labels.push(c.label); values.push(v); colors.push(c.color); }
+  });
+  const hasData = values.length > 0;
+  document.getElementById('pie-empty').style.display = hasData ? 'none' : 'block';
+  const canvas = document.getElementById('pieChart');
+  canvas.style.display = hasData ? 'block' : 'none';
+  if(!hasData) return;
+  if(pieChart) pieChart.destroy();
+  pieChart = new Chart(canvas, {
+    type:'doughnut',
+    data:{ labels, datasets:[{data:values, backgroundColor:colors, borderWidth:2, borderColor:'#fff'}]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{position:'right', labels:{font:{family:'DM Sans', size:12}, padding:12}},
+        tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${fmt(ctx.raw)}`}}
+      }
+    }
+  });
+}
+
+function updateSavingsChart() {
+  const labels = MONTHS.map(m => MONTH_LABELS[m].split(' ')[1]);
+  const savings = [];
+  let cumul = 0;
+  const cumulData = [];
+  MONTHS.forEach(m => {
+    const md = data.months[m];
+    const inc = md.salary + md.tips + md.otherIncome;
+    const exp = CATEGORIES.reduce((s,c) => s+(md.expenses[c.id]||0), 0);
+    const sav = md.manualSavings !== null ? md.manualSavings : inc - exp;
+    savings.push(sav < 0 ? 0 : sav);
+    cumul += (sav < 0 ? 0 : sav);
+    cumulData.push(cumul);
+  });
+  const canvas = document.getElementById('savingsChart');
+  if(savingsChart) savingsChart.destroy();
+  savingsChart = new Chart(canvas, {
+    type:'bar',
+    data:{
+      labels,
+      datasets:[
+        {label:'Épargne mensuelle', data:savings, backgroundColor:'rgba(82,183,136,0.25)', borderColor:'#52B788', borderWidth:2, borderRadius:8, type:'bar'},
+        {label:'Épargne cumulée', data:cumulData, borderColor:'#0077B6', backgroundColor:'transparent', borderWidth:2.5, pointRadius:5, pointBackgroundColor:'#0077B6', type:'line', yAxisID:'y2', tension:.4},
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      scales:{
+        y:{grid:{color:'rgba(0,0,0,0.05)'}, ticks:{callback:v=>v+'€'}},
+        y2:{position:'right', grid:{display:false}, ticks:{callback:v=>v+'€'}}
+      },
+      plugins:{
+        legend:{labels:{font:{family:'DM Sans', size:12}}},
+        tooltip:{callbacks:{label:ctx=>`${ctx.dataset.label}: ${fmt(ctx.raw)}`}}
+      }
+    }
+  });
+}
+
+function updateBudgetChart() {
+  const canvas = document.getElementById('budgetChart');
+  if(budgetChart) budgetChart.destroy();
+  const labels = CATEGORIES.map(c=>c.label);
+  const limitData = CATEGORIES.map(c=>data.limits[c.id]||0);
+  const spentData = CATEGORIES.map(c=>data.months[currentMonth].expenses[c.id]||0);
+  budgetChart = new Chart(canvas, {
+    type:'bar',
+    data:{
+      labels,
+      datasets:[
+        {label:'Limite', data:limitData, backgroundColor:'rgba(0,119,182,0.15)', borderColor:'#0077B6', borderWidth:1.5, borderRadius:6},
+        {label:'Dépensé', data:spentData, backgroundColor: spentData.map((v,i)=>v>limitData[i]?'rgba(230,57,70,0.5)':'rgba(82,183,136,0.5)'), borderColor: spentData.map((v,i)=>v>limitData[i]?'#E63946':'#52B788'), borderWidth:2, borderRadius:6},
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      scales:{
+        y:{grid:{color:'rgba(0,0,0,0.05)'}, ticks:{callback:v=>v+'€'}},
+        x:{ticks:{font:{size:11}}}
+      },
+      plugins:{legend:{labels:{font:{family:'DM Sans', size:12}}}}
+    }
+  });
+}
+
+function updateRecapChart() {
+  const canvas = document.getElementById('recapChart');
+  if(recapChart) recapChart.destroy();
+  const labels = MONTHS.map(m => MONTH_LABELS[m].split(' ')[1]);
+  let cumul = 0;
+  const cumulSav = [];
+  const monthSav = [];
+  MONTHS.forEach(m => {
+    const md = data.months[m];
+    const inc = md.salary + md.tips + md.otherIncome;
+    const exp = CATEGORIES.reduce((s,c) => s+(md.expenses[c.id]||0), 0);
+    const sav = md.manualSavings !== null ? md.manualSavings : inc - exp;
+    monthSav.push(Math.max(0, sav));
+    cumul += Math.max(0, sav);
+    cumulSav.push(cumul);
+  });
+  const goal = data.savingGoal || 6000;
+  const goalLine = MONTHS.map(() => goal);
+  recapChart = new Chart(canvas, {
+    type:'line',
+    data:{
+      labels,
+      datasets:[
+        {label:'Épargne cumulée', data:cumulSav, borderColor:'#52B788', backgroundColor:'rgba(82,183,136,0.1)', borderWidth:3, fill:true, tension:.4, pointRadius:6, pointBackgroundColor:'#52B788'},
+        {label:'Objectif saison', data:goalLine, borderColor:'#E9C46A', borderWidth:2, borderDash:[8,4], pointRadius:0, fill:false},
+        {label:'Épargne mensuelle', data:monthSav, borderColor:'#0077B6', backgroundColor:'rgba(0,119,182,0.2)', borderWidth:2, tension:.4, pointRadius:4, type:'bar', yAxisID:'y2'},
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      scales:{
+        y:{grid:{color:'rgba(0,0,0,0.05)'}, ticks:{callback:v=>v+'€'}},
+        y2:{position:'right', grid:{display:false}, ticks:{callback:v=>v+'€'}}
+      },
+      plugins:{legend:{labels:{font:{family:'DM Sans', size:12}}}}
+    }
+  });
+}
+
+function updateGoal() {
+  data.savingGoal = parseFloat(document.getElementById('saving-goal').value)||6000;
+  data.monthlySavingGoal = parseFloat(document.getElementById('monthly-saving-goal').value)||1000;
+  saveData();
+  const total = calcTotalSavings();
+  const goal = data.savingGoal;
+  const pct = goal > 0 ? Math.min((total/goal)*100, 100) : 0;
+  document.getElementById('goal-pct').textContent = Math.round(pct)+'%';
+  document.getElementById('goal-current').textContent = fmt(total);
+  document.getElementById('goal-bar').style.width = pct+'%';
+  const circumference = 351.9;
+  const offset = circumference - (pct/100)*circumference;
+  document.getElementById('ring-fill').setAttribute('stroke-dashoffset', offset);
+}
+
+function calcTotalSavings() {
+  return MONTHS.reduce((s, m) => {
+    const md = data.months[m];
+    const inc = md.salary + md.tips + md.otherIncome;
+    const exp = CATEGORIES.reduce((x,c) => x+(md.expenses[c.id]||0), 0);
+    const sav = md.manualSavings !== null ? md.manualSavings : inc - exp;
+    return s + Math.max(0, sav);
+  }, 0);
+}
+
+function addLog() {
+  const amount = parseFloat(document.getElementById('log-amount').value)||0;
+  if(!amount) return;
+  const log = {
+    id: Date.now(),
+    date: document.getElementById('log-date').value || new Date().toISOString().split('T')[0],
+    amount,
+    cat: document.getElementById('log-cat').value,
+    desc: document.getElementById('log-desc').value || '—',
+  };
+  const month = getMonthFromDate(log.date);
+  if(month) log.month = month;
+  data.logs.push(log);
+  if(month && log.cat) {
+    const catId = getCatId(log.cat);
+    if(catId) {
+      data.months[month].expenses[catId] = (data.months[month].expenses[catId]||0) + amount;
+    }
+  }
+  saveData();
+  document.getElementById('log-amount').value = '';
+  document.getElementById('log-desc').value = '';
+  renderLogs();
+  updateMonthCalc();
+  loadMonthData();
+  renderCategoryInputs();
+}
+
+function getCatId(catLabel) {
+  const map = {
+    '🍔 Alimentation':'alimentation','🚗 Transport':'transport','🏠 Logement':'logement',
+    '🎉 Sorties':'sorties','👕 Vêtements':'vetements','💊 Santé':'sante',
+    '📱 Téléphone/Internet':'telephone','☕ Café/Resto':'alimentation','🛒 Courses':'courses',
+    '✈️ Voyage':'transport','💄 Beauté':'beaute','🎮 Loisirs':'loisirs','📦 Divers':'divers'
+  };
+  return map[catLabel];
+}
+
+function getMonthFromDate(dateStr) {
+  if(!dateStr) return null;
+  const m = parseInt(dateStr.split('-')[1]);
+  const map = {5:'mai',6:'juin',7:'juillet',8:'aout',9:'septembre',10:'octobre'};
+  return map[m] || null;
+}
+
+function renderLogs() {
+  const filterM = document.getElementById('filter-month').value;
+  let logs = [...data.logs].reverse();
+  if(filterM !== 'all') logs = logs.filter(l => l.month === filterM);
+  const list = document.getElementById('log-list');
+  list.innerHTML = '';
+  if(!logs.length) {
+    list.innerHTML = '<div style="text-align:center;padding:30px;color:var(--muted);font-size:14px;">Aucune dépense enregistrée 🎉</div>';
+    return;
+  }
+  logs.forEach(log => {
+    const div = document.createElement('div');
+    div.className = 'log-entry';
+    div.innerHTML = `
+      <span class="log-cat">${log.cat.split(' ')[0]}</span>
+      <div class="log-desc">
+        ${log.desc}
+        <small>${formatDate(log.date)} · ${log.cat}</small>
+      </div>
+      <span class="log-amount">${fmt(log.amount)}</span>
+      <button class="log-delete" onclick="deleteLog(${log.id})">✕</button>
+    `;
+    list.appendChild(div);
+  });
+  const today = new Date().toISOString().split('T')[0];
+  const todayLogs = data.logs.filter(l => l.date === today);
+  const todayTotal = todayLogs.reduce((s,l) => s+l.amount, 0);
+  document.getElementById('today-total').textContent = fmt(todayTotal);
+  const tsum = document.getElementById('today-summary');
+  if(todayLogs.length) {
+    tsum.innerHTML = todayLogs.map(l => `
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
+        <span style="font-size:13px;">${l.cat.split(' ')[0]} ${l.desc}</span>
+        <span style="font-family:'DM Mono',monospace;font-size:13px;color:var(--coral);">${fmt(l.amount)}</span>
+      </div>
+    `).join('');
+  } else {
+    tsum.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;">Aucune dépense aujourd\'hui 🎉</div>';
+  }
+}
+
+function deleteLog(id) {
+  if(!confirm('Supprimer cette dépense ?')) return;
+  const log = data.logs.find(l => l.id === id);
+  if(log && log.month) {
+    const catId = getCatId(log.cat);
+    if(catId) data.months[log.month].expenses[catId] = Math.max(0,(data.months[log.month].expenses[catId]||0) - log.amount);
+  }
+  data.logs = data.logs.filter(l => l.id !== id);
+  saveData();
+  renderLogs();
+  loadMonthData();
+}
+
+function clearLogs() {
+  if(!confirm('Supprimer tout l\'historique ?')) return;
+  data.logs = [];
+  saveData();
+  renderLogs();
+}
+
+function addWork() {
+  const date = document.getElementById('work-date').value;
+  if(!date) return alert('Sélectionne une date');
+  const start = document.getElementById('work-start').value;
+  const end = document.getElementById('work-end').value;
+  const hours = calcHours(start, end);
+  const entry = {
+    id: Date.now(),
+    date,
+    type: document.getElementById('work-type').value,
+    start, end, hours,
+    tips: parseFloat(document.getElementById('work-tips').value)||0,
+    notes: document.getElementById('work-notes').value,
+    month: getMonthFromDate(date),
+  };
+  data.work.push(entry);
+  if(entry.month && entry.tips > 0) {
+    data.months[entry.month].tips = (data.months[entry.month].tips||0) + entry.tips;
+  }
+  saveData();
+  document.getElementById('work-tips').value = '';
+  document.getElementById('work-notes').value = '';
+  renderWorkTable();
+  updateWorkStats();
+}
+
+function calcHours(start, end) {
+  if(!start||!end) return 0;
+  const [sh,sm] = start.split(':').map(Number);
+  const [eh,em] = end.split(':').map(Number);
+  let diff = (eh*60+em) - (sh*60+sm);
+  if(diff < 0) diff += 24*60;
+  return Math.round(diff/6)/10;
+}
+
+function renderWorkTable() {
+  const tbody = document.getElementById('work-table');
+  const entries = data.work.filter(w => w.month === currentWorkMonth).sort((a,b)=>a.date.localeCompare(b.date));
+  tbody.innerHTML = '';
+  if(!entries.length) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:30px;font-size:14px;">Aucun service enregistré ce mois-ci</td></tr>`;
+    return;
+  }
+  entries.forEach(e => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${formatDate(e.date)}</td>
+      <td>${e.type}</td>
+      <td class="td-num">${e.start}</td>
+      <td class="td-num">${e.end}</td>
+      <td class="td-num">${e.hours}h</td>
+      <td class="td-num" style="color:var(--mint);">${fmt(e.tips)}</td>
+      <td style="color:var(--muted);font-size:12px;">${e.notes||'—'}</td>
+      <td><button class="btn btn-danger btn-sm" onclick="deleteWork(${e.id})">✕</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function deleteWork(id) {
+  const w = data.work.find(x => x.id === id);
+  if(w && w.month && w.tips > 0) {
+    data.months[w.month].tips = Math.max(0, (data.months[w.month].tips||0) - w.tips);
+  }
+  data.work = data.work.filter(x => x.id !== id);
+  saveData();
+  renderWorkTable();
+  updateWorkStats();
+}
+
+function updateWorkStats() {
+  const entries = data.work.filter(w => w.month === currentWorkMonth);
+  const days = entries.length;
+  const hours = entries.reduce((s,e)=>s+e.hours, 0);
+  const tips = entries.reduce((s,e)=>s+e.tips, 0);
+  document.getElementById('stat-days').textContent = days;
+  document.getElementById('stat-hours').textContent = hours.toFixed(1)+'h';
+  document.getElementById('stat-tips').textContent = fmt(tips);
+  document.getElementById('stat-avg-tips').textContent = days > 0 ? fmt(Math.round(tips/days)) : '0 €';
+  updateHero();
+}
+
+function renderLimits() {
+  const container = document.getElementById('limit-sliders');
+  const status = document.getElementById('limit-status');
+  if(!container) return;
+  container.innerHTML = '';
+  status.innerHTML = '';
+  CATEGORIES.forEach(c => {
+    const limit = data.limits[c.id] || 0;
+    const spent = data.months[currentMonth].expenses[c.id] || 0;
+    const pct = limit > 0 ? Math.min((spent/limit)*100, 110) : 0;
+    const color = pct > 100 ? 'danger' : pct > 85 ? 'warn' : 'ok';
+    const row = document.createElement('div');
+    row.className = 'limit-row';
+    row.innerHTML = `
+      <span class="limit-label">${c.label}</span>
+      <input type="range" min="0" max="1000" step="10" value="${limit}" 
+        oninput="updateLimit('${c.id}', this.value); document.getElementById('lv-${c.id}').textContent=this.value+'€'">
+      <span class="limit-val" id="lv-${c.id}">${limit}€</span>
+    `;
+    container.appendChild(row);
+    const sb = document.createElement('div');
+    sb.style.cssText = 'margin-bottom:12px;';
+    sb.innerHTML = `
+      <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+        <span style="font-size:13px;">${c.label}</span>
+        <span style="font-size:12px; font-family:'DM Mono',monospace;">${fmt(spent)} / ${fmt(limit)}</span>
+      </div>
+      <div class="progress-wrap"><div class="progress-bar ${color}" style="width:${Math.min(pct,100)}%"></div></div>
+    `;
+    status.appendChild(sb);
+  });
+}
+
+function updateLimit(id, val) {
+  data.limits[id] = parseInt(val)||0;
+  saveData();
+}
+
+function updateRecap() {
+  let totalIncome=0, totalExp=0, totalSav=0, totalDays=0;
+  const tbody = document.getElementById('recap-table');
+  tbody.innerHTML = '';
+  MONTHS.forEach(m => {
+    const md = data.months[m];
+    const inc = md.salary + md.tips + md.otherIncome;
+    const exp = CATEGORIES.reduce((s,c) => s+(md.expenses[c.id]||0), 0);
+    const sav = md.manualSavings !== null ? md.manualSavings : inc - exp;
+    const savPct = inc > 0 ? Math.round((sav/inc)*100) : 0;
+    const days = data.work.filter(w=>w.month===m).length;
+    totalIncome += inc; totalExp += exp; totalSav += Math.max(0,sav); totalDays += days;
+    const chip = savPct > 30 ? 'chip-ok' : savPct > 15 ? 'chip-warn' : 'chip-danger';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${MONTH_LABELS[m]}</strong></td>
+      <td class="td-num">${fmt(md.salary)}</td>
+      <td class="td-num" style="color:var(--mint);">${fmt(md.tips)}</td>
+      <td class="td-num">${fmt(md.otherIncome)}</td>
+      <td class="td-num" style="color:var(--azure);font-weight:600;">${fmt(inc)}</td>
+      <td class="td-num" style="color:var(--coral);">${fmt(exp)}</td>
+      <td class="td-num" style="color:var(--mint);font-weight:600;">${fmt(Math.max(0,sav))}</td>
+      <td><span class="chip ${chip}">${savPct}%</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+  const tfoot = document.createElement('tr');
+  tfoot.style.cssText = 'background:var(--deep);color:#fff;';
+  const savPctTotal = totalIncome > 0 ? Math.round((totalSav/totalIncome)*100) : 0;
+  tfoot.innerHTML = `
+    <td style="color:#fff;font-weight:700;">TOTAL</td>
+    <td class="td-num" style="color:#90E0EF;">—</td>
+    <td class="td-num" style="color:#90E0EF;">—</td>
+    <td class="td-num" style="color:#90E0EF;">—</td>
+    <td class="td-num" style="color:var(--gold);font-weight:700;">${fmt(totalIncome)}</td>
+    <td class="td-num" style="color:#ffb4a2;">${fmt(totalExp)}</td>
+    <td class="td-num" style="color:#80FFAB;font-weight:700;">${fmt(totalSav)}</td>
+    <td><span class="chip chip-ok" style="background:rgba(82,183,136,0.3);color:#80FFAB;">${savPctTotal}%</span></td>
+  `;
+  tbody.appendChild(tfoot);
+  document.getElementById('recap-income').textContent = fmt(totalIncome);
+  document.getElementById('recap-exp').textContent = fmt(totalExp);
+  document.getElementById('recap-sav').textContent = fmt(totalSav);
+  document.getElementById('recap-days').textContent = totalDays;
+  updateRecapChart();
+}
+
+function updateHero() {
+  let totalIncome=0, totalSav=0;
+  MONTHS.forEach(m => {
+    const md = data.months[m];
+    const inc = md.salary+md.tips+md.otherIncome;
+    const exp = CATEGORIES.reduce((s,c)=>s+(md.expenses[c.id]||0),0);
+    const sav = md.manualSavings!==null ? md.manualSavings : inc-exp;
+    totalIncome += inc;
+    totalSav += Math.max(0,sav);
+  });
+  const totalDays = data.work.length;
+  document.getElementById('hero-total-earned').textContent = fmt(totalIncome);
+  document.getElementById('hero-total-saved').textContent = fmt(totalSav);
+  document.getElementById('hero-days').textContent = totalDays;
+}
+
+function exportData() {
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'saison-tropez-2026.json';
+  a.click();
+  let csv = 'Mois,Salaire,Pourboires,Autres,Revenus totaux,Dépenses,Épargne\n';
+  MONTHS.forEach(m => {
+    const md = data.months[m];
+    const inc = md.salary+md.tips+md.otherIncome;
+    const exp = CATEGORIES.reduce((s,c)=>s+(md.expenses[c.id]||0),0);
+    const sav = md.manualSavings!==null ? md.manualSavings : inc-exp;
+    csv += `${MONTH_LABELS[m].split(' ')[1]},${md.salary},${md.tips},${md.otherIncome},${inc},${exp},${Math.max(0,sav)}\n`;
+  });
+  setTimeout(() => {
+    const blob2 = new Blob([csv], {type:'text/csv'});
+    const a2 = document.createElement('a');
+    a2.href = URL.createObjectURL(blob2);
+    a2.download = 'saison-tropez-2026.csv';
+    a2.click();
+  }, 500);
+}
+
+function fmt(n) {
+  return (Math.round((n||0)*100)/100).toLocaleString('fr-FR', {minimumFractionDigits:0, maximumFractionDigits:0}) + ' €';
+}
+function formatDate(s) {
+  if(!s) return '';
+  const [y,m,d] = s.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+function updateAll() {
+  updateHero();
+  updateGoal();
+  const activeSection = document.querySelector('.section.active')?.id;
+  if(activeSection === 'tab-overview') { updateOverview(); }
+  else if(activeSection === 'tab-monthly') { loadMonthData(); }
+  else if(activeSection === 'tab-daily') { renderLogs(); }
+  else if(activeSection === 'tab-work') { renderWorkTable(); updateWorkStats(); }
+  else if(activeSection === 'tab-budget') { renderLimits(); updateBudgetChart(); }
+  else if(activeSection === 'tab-recap') { updateRecap(); }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  loadData();
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('log-date').value = today;
+  document.getElementById('work-date').value = today;
+  document.getElementById('saving-goal').value = data.savingGoal || 6000;
+  document.getElementById('monthly-saving-goal').value = data.monthlySavingGoal || 1000;
+  updateAll();
+  updateOverview();
+});
+</script>
+</body>
+</html>
